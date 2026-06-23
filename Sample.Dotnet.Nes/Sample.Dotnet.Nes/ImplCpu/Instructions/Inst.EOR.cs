@@ -1,0 +1,97 @@
+﻿using Sample.Dotnet.Nes.Types;
+
+namespace Sample.Dotnet.Nes.ImplCpu.Instructions;
+
+public static partial class Inst
+{
+    private static void _EOR(Cpu cpu, u8 v)
+    {
+        cpu.Register.A ^= v;
+
+        cpu.Register.Status.SetZfromValue(cpu.Register.A);
+        cpu.Register.Status.SetNfromValue(cpu.Register.A);
+    }
+
+    public static void EOR_IMMEDIATE(Cpu cpu, out int outCycle)
+    {
+        u8 v = cpu.FetchByte();
+        _EOR(cpu, v);
+
+        outCycle = 2;
+    }
+
+    public static void EOR_ZERO_PAGE(Cpu cpu, out int outCycle)
+    {
+        u16 addr = Addressing.ZeroPage(cpu);
+        u8 v = cpu.ReadByte(addr);
+        _EOR(cpu, v);
+
+        outCycle = 3;
+    }
+
+    public static void EOR_ZERO_PAGE_X(Cpu cpu, out int outCycle)
+    {
+        u16 addr = Addressing.ZeroPage_X(cpu);
+        u8 v = cpu.ReadByte(addr);
+        _EOR(cpu, v);
+
+        outCycle = 4;
+    }
+
+    public static void EOR_ABSOLUTE(Cpu cpu, out int outCycle)
+    {
+        u16 addr = Addressing.Absolute(cpu);
+        u8 v = cpu.ReadByte(addr);
+        _EOR(cpu, v);
+
+        outCycle = 4;
+    }
+
+    public static void EOR_ABSOLUTE_X(Cpu cpu, out int outCycle)
+    {
+        u16 addr = Addressing.Absolute_X(cpu, out bool isPageCrossed);
+        u8 v = cpu.ReadByte(addr);
+        _EOR(cpu, v);
+
+        outCycle = 4;
+        if (isPageCrossed)
+        {
+            outCycle += 1;
+        }
+    }
+
+    public static void EOR_ABSOLUTE_Y(Cpu cpu, out int outCycle)
+    {
+        u16 addr = Addressing.Absolute_Y(cpu, out bool isPageCrossed);
+        u8 v = cpu.ReadByte(addr);
+        _EOR(cpu, v);
+
+        outCycle = 4;
+        if (isPageCrossed)
+        {
+            outCycle += 1;
+        }
+    }
+
+    public static void EOR_INDIRECT_X(Cpu cpu, out int outCycle)
+    {
+        u16 addr = Addressing.Indirect_X(cpu);
+        u8 v = cpu.ReadByte(addr);
+        _EOR(cpu, v);
+
+        outCycle = 6;
+    }
+
+    public static void EOR_INDIRECT_Y(Cpu cpu, out int outCycle)
+    {
+        u16 addr = Addressing.Indirect_Y(cpu, out bool isPageCrossed);
+        u8 v = cpu.ReadByte(addr);
+        _EOR(cpu, v);
+
+        outCycle = 5;
+        if (isPageCrossed)
+        {
+            outCycle += 1;
+        }
+    }
+}

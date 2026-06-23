@@ -1,0 +1,31 @@
+﻿using Sample.Dotnet.Nes.Types;
+
+namespace Sample.Dotnet.Nes.ImplCpu.Instructions;
+
+public static partial class Inst
+{
+    public static void BNE(Cpu cpu, out int outCpuCycle)
+    {
+        i8 offset = (i8)cpu.FetchByte();
+        if (!cpu.Register.Status.Z)
+        {
+            u16 currPc = cpu.Register.PC;
+            u16 nextPc = (u16)(currPc + offset);
+            cpu.Register.PC = nextPc;
+
+            bool isPageCrossed = (currPc & 0xFF00) != (nextPc & 0xFF00);
+            if (isPageCrossed)
+            {
+                outCpuCycle = 4;
+            }
+            else
+            {
+                outCpuCycle = 3;
+            }
+        }
+        else
+        {
+            outCpuCycle = 2;
+        }
+    }
+}

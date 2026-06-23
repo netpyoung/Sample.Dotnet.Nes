@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Sample.Dotnet.Nes.App_Raylib/Sample.Dotnet.Nes.App_Raylib.csproj" Id="4a66fd38-5bde-4028-b9d8-8839d4203463" />
+  <Project Path="Sample.Dotnet.Nes.App_SDL3/Sample.Dotnet.Nes.App_SDL3.csproj" />
+  <Project Path="Sample.Dotnet.Nes.Tests/Sample.Dotnet.Nes.Tests.csproj" />
+  <Project Path="Sample.Dotnet.Nes/Sample.Dotnet.Nes.csproj" />
+</Solution>
