@@ -8,8 +8,8 @@ public sealed class Test_NesTest
 {
     static class RomPath
     {
-        public const string NES_TEST = ".roms/test/nestest.nes";
-        public const string NES_TEST_LOG = ".roms/test/nestest.log";
+        public const string NES_TEST = "TestRoms/nestest/nestest.nes";
+        public const string NES_TEST_LOG = "TestRoms/nestest/nestest.log";
     }
     static readonly string SOLUTION_DIR = GetSolutionDirectory();
 

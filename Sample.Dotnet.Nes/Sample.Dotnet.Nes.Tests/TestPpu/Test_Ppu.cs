@@ -1,46 +1,14 @@
 ﻿using Sample.Dotnet.Nes.ImplCartridge;
 using Sample.Dotnet.Nes.ImplPpu;
 using Sample.Dotnet.Nes.Types;
-using System.Reflection;
 
 namespace Sample.Dotnet.Nes.Tests.TestPpu;
 
 public sealed class Test_Ppu
 {
-    static class RomPath
-    {
-        public const string NES_TEST = ".roms/test/nestest.nes";
-        public const string NES_TEST_LOG = ".roms/test/nestest.log";
-        public const string MARIO = ".roms/mario.nes";
-    }
-    static readonly string SOLUTION_DIR = GetSolutionDirectory();
-
-    public static string GetSolutionDirectory()
-    {
-        DirectoryInfo? currentDirOrNull = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!);
-
-        while (currentDirOrNull != null && currentDirOrNull.GetFiles("*.slnx").Length == 0)
-        {
-            currentDirOrNull = currentDirOrNull.Parent;
-        }
-
-        if (currentDirOrNull == null)
-        {
-            throw new DirectoryNotFoundException("Solution directory not found.");
-        }
-
-        if (currentDirOrNull.FullName == null)
-        {
-            throw new DirectoryNotFoundException("Solution directory not found.");
-        }
-
-        return currentDirOrNull.FullName;
-    }
-
     private static Ppu PreparePpu()
     {
-        string romPath = Path.Combine(SOLUTION_DIR, RomPath.MARIO);
-        Cartridge cartridge = Cartridge.CreateFromPath(romPath);
+        Cartridge cartridge = Cartridge.CreateDummyCartridge();
         PpuBus bus = new PpuBus(cartridge);
         Ppu ppu = new Ppu(bus);
         return ppu;
@@ -51,10 +19,7 @@ public sealed class Test_Ppu
     [Fact]
     public void Test01()
     {
-        string romPath = Path.Combine(SOLUTION_DIR, RomPath.MARIO);
-        Cartridge cartridge = Cartridge.CreateFromPath(romPath);
-        PpuBus bus = new PpuBus(cartridge);
-        Ppu ppu = new Ppu(bus);
+        Ppu ppu = PreparePpu();
 
         // # Test 1: VBlank fires at the right scanline
         for (int i = 0; i < 241 * 341 - 1; ++i)
